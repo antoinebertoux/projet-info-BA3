@@ -58,22 +58,22 @@ int main (int argc, char **argv){
 	psq_file = fopen ( argv[2] , "rb" );
 	if (psq_file==NULL) {fputs ("File error",stderr); exit (1);}
 
-	// obtain file size:
+	//pour avoir la size du fichier psq:
 	fseek (psq_file , 0 , SEEK_END);
 	lSize = ftell (psq_file);
 	rewind (psq_file);
 
-	// allocate memory to contain the whole file:
+	// on alloue de la memoire pour le buffer qui va stocker tout le fichier:
 	buffer = (char*) malloc (sizeof(char)*lSize);
 	if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
 
-	// copy the file into the buffer:
+	//copie les données dans le buffer:
 	result = fread (buffer,1,lSize,psq_file);
 	if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
 
-	/* the whole file is now loaded in the memory buffer. */
+	
 
-	// terminate
+	// ferme fichier psq
 	fclose (psq_file);
 	
 	
