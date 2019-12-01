@@ -19,6 +19,9 @@ int main (int argc, char **argv){
 		cout << "Nombre d'arguments invalides" << endl;
 		exit(1);
 	}
+		
+	
+	
 
 	ifstream cible_file(argv[1]); // ouverture fichier (fichier de la proteine)
 	
@@ -43,48 +46,90 @@ int main (int argc, char **argv){
 	
 	cible_file.close();
 	Protein *protein=new Protein(sequence); // pourquoi cree un pointeur ?
-	ifstream rf(argv[2], ios::in | ios::binary); //ouverture base de donnees
-	if(!rf) {
-		cout << "Cannot open file!" << endl;
-		exit(1);
-	}
+	
+	
+	
+	
+	FILE *psq_file;
+	long lSize;
+	char *buffer;
+	size_t result;
 
-	int8_t ch;
-	int8_t zero=int8_t(0);
-	vector<int8_t> data_base;
-	rf.read((char *)&ch, sizeof(int8_t));
+	psq_file = fopen ( argv[2] , "rb" );
+	if (psq_file==NULL) {fputs ("File error",stderr); exit (1);}
+
+	// obtain file size:
+	fseek (psq_file , 0 , SEEK_END);
+	lSize = ftell (psq_file);
+	rewind (psq_file);
+
+	// allocate memory to contain the whole file:
+	buffer = (char*) malloc (sizeof(char)*lSize);
+	if (buffer == NULL) {fputs ("Memory error",stderr); exit (2);}
+
+	// copy the file into the buffer:
+	result = fread (buffer,1,lSize,psq_file);
+	if (result != lSize) {fputs ("Reading error",stderr); exit (3);}
+
+	/* the whole file is now loaded in the memory buffer. */
+
+	// terminate
+	fclose (psq_file);
+	
+	
+	
+
+
+	char zero=char(0);
+	vector<char> sequence_binnaire = protein->getsequence_binnaire();
+	//buffer.read((char *)&ch, sizeof(int8_t));
+	
 	bool verif= false;
+	bool continue_seq =true;
 	int offsetpsq=-1;
-	while(rf.read((char *)&ch, sizeof(int8_t))){ // ch servira a comparer avec la sequence de P00533 que tu dois transformer en binaire 
-		if(ch==zero){
-			verif=protein->isequal(data_base, "nice");
-			for (int i=0;i<data_base.size();i++){
-				data_base.clear();
+	int pos = 1;
+
+	while(pos<=lSize){ // ch servira a comparer avec la sequence de P00533 que tu dois transformer en binaire 
+		while(buffer[pos]!=zero){
+			if(continue_seq){
+				for(int i=0;i< sequence_binnaire.size(); i++){
+					if(sequence_binnaire[i]!=buffer[pos]){
+						continue_seq=false;
+						break;
+					}
+					pos++;
+				}
+			}
+			else{
+				pos++;
 			}
 			
-			if (verif){
-				offsetpsq=(int)rf.tellg();//-(int)sequence.size()*sizeof(int8_t);
-				cout << "offsetpsq : " << offsetpsq << endl;
-				break;
-			}
+		}
+		
+		if (continue_seq){
+			offsetpsq=pos+1;//-(int)sequence.size()*sizeof(int8_t);
+			cout << "offsetpsq : " << offsetpsq << endl;
+			break;
+		
 		}
 		else{
-			data_base.push_back(ch);
+			continue_seq=true;
 		}
-	}
+		pos++;
+			
+		}
+		
+			
+		
+	cout << int(buffer[offsetpsq]) << endl;
+	cout << int(buffer[offsetpsq-1]) << endl;
 	
-	if(!rf.good()) {
-		cout << endl << "Error occurred at reading time!" << endl;
-		rf.close();
-		exit(1);
-	}
-	rf.close();
-	cout << "offsetpsq : " << offsetpsq << endl;
+	
 	Pin rpin(argv[3]);
 	Phr rphr(argv[4], rpin.get_offsetphr(offsetpsq));
 	cout << "name : " << rphr.get_name() << endl;
-
 	delete protein; // ne pas oublier
+	free (buffer);
 	
 
 	t2 = clock();
