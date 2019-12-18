@@ -8,6 +8,7 @@
 #include <pthread.h>
 #include <errno.h>
 #include <thread>
+#include <cstring>
 #include "Txt.h"
 #include "Pin.h"
 #include "Phr.h"
