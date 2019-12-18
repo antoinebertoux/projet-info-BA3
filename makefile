@@ -1,5 +1,5 @@
 all: main.cpp Blosum.o Txt.o Psq.o Pin.o Phr.o 
-	g++ Blosum.o Txt.o Psq.o Pin.o Phr.o main.cpp -o main -Ofast -s 
+	g++ Blosum.o Txt.o Psq.o Pin.o Phr.o main.cpp -o main -Ofast -s -lpthread
 	#time ./main ./P00533.fasta ./newE.fasta ./BLOSUM62.txt
 
 Blosum.o: Blosum.cpp
