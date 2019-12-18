@@ -16,6 +16,6 @@ By default,the code is using the blossum62 matrix, a « gap_open » penalty of 1
 There are various versions of the code: 
 - one in which the functions "trace_back" and "parcourire_buffer" are directly placed in the main, another exists in which the functions are placed in a class (but it is slower).
 - one adapted for machine with only one core, this code doesn't use threads.
-- one adapted for machine with several cores, using threads (a mutex has been implemented too).
+- one adapted for machine with several cores, using threads (a mutex has been implemented too). It's important to allocated enough RAM for a proper functioning.
 
 
