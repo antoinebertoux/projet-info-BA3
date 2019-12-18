@@ -12,24 +12,41 @@ using namespace std;
 class Pin
 {
 private:
-	char* filename;
+	string filename;
+	string title ;
+	string titlestamp;
+	int version;
+	int nbreprot;
+	int typedb;
+	int maxlength;
 	ifstream file;
-	int lenght_title;
-	int lenght_titlestamp;
+	int length_title;
+	int length_titlestamp;
+	int length_version;
+	int dbtype;
+	int max;
 	int N;
-	int pos;
-	int protnumber = -1; //0?
-	int offsetphr;
-	void find_lenght_title();
-	void find_lenght_titlestamp();
+	
+	void find_length_title();
+	void find_length_titlestamp();
 	void find_N();
-	void find_protnumber(int offsetpsq);
-	void find_offsetphr();
+	int  find_protnumber(int offsetpsq);
+	int find_offsetphr(int protnumber);
+	void find_version();
+	void find_dbtype();
+	void find_maxlength();
 public:
 	Pin(char* name);
 	~Pin();
 	void read_pin();
 	int get_offsetphr(int n_offsetpsq);
+	string get_title();
+	string get_titlestamp();
+	int get_version();
+	int get_nbreprot();
+	int get_typedb();
+	int get_maxlength();
+	
 };
 
 #endif

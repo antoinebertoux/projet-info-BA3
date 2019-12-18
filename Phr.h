@@ -12,16 +12,16 @@ using namespace std;
 class Phr
 {
 private:
+	string filename;
 	ifstream file;
-	int offsetphr;
-	uint8_t len;
-	string name;
-	void find_len();
-	void find_lenght();
+	string nom;
+	uint8_t find_len(int offsetphr);
+	void find_length(uint8_t len);
 public:
-	Phr(char* name, int n_offsetphr);
+	Phr();
+	Phr(char* name);
 	~Phr();
-	void read_phr();
+	string read_phr(int n_offsetphr);
 	string get_name();
 };
 
