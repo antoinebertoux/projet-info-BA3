@@ -116,12 +116,12 @@ void trace_back(int offsetpsq,char* sequence_binnaire,int bl_final[][28],int siz
 		}
 		else if (trace[i][j] == left){
 			i=i-1;
-			original+=" ";
+			original+="-";
 		}
 		else if (trace[i][j] == up){
 			j=j-1;
 			pos--;
-			allignement+=" ";	
+			allignement+="-";	
 		}
 		else{
 			break;
